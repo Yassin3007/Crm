@@ -12,6 +12,7 @@ use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\DistrictController;
 use App\Http\Controllers\Dashboard\BranchController;
+use App\Http\Controllers\Dashboard\LeadController;
 
 
 Route::get('/dashboard2', function () {
@@ -322,4 +323,35 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('cities/{city}', [CityController::class, 'destroy'])
         ->name('cities.destroy')
         ->middleware('can:delete_city');
+});
+
+// Routes for Lead
+Route::middleware(['auth'])->group(function() {
+    Route::get('leads', [LeadController::class, 'index'])
+        ->name('leads.index')
+        ->middleware('can:view_lead');
+
+    Route::get('leads/create', [LeadController::class, 'create'])
+        ->name('leads.create')
+        ->middleware('can:create_lead');
+
+    Route::post('leads', [LeadController::class, 'store'])
+        ->name('leads.store')
+        ->middleware('can:create_lead');
+
+    Route::get('leads/{lead}', [LeadController::class, 'show'])
+        ->name('leads.show')
+        ->middleware('can:view_lead');
+
+    Route::get('leads/{lead}/edit', [LeadController::class, 'edit'])
+        ->name('leads.edit')
+        ->middleware('can:edit_lead');
+
+    Route::put('leads/{lead}', [LeadController::class, 'update'])
+        ->name('leads.update')
+        ->middleware('can:edit_lead');
+
+    Route::delete('leads/{lead}', [LeadController::class, 'destroy'])
+        ->name('leads.destroy')
+        ->middleware('can:delete_lead');
 });

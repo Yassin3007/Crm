@@ -27,3 +27,7 @@
 
 
       php artisan make:crud Category  --fields=name_en:string,name_ar:string,company_id:integer,is_active:boolean  --validation='{"name_en":"required|max:255","name_ar":"required|max:255","is_active":"required","company_id":"required"}'  --relationships='{"belongsTo":["Company"]}'
+
+
+
+      php artisan make:crud Lead --fields=name:string,phone:string,whatsapp_number:string,email:string,national_id:string,branch_id:integer,city_id:integer,district_id:integer,location_link:string  --validation='{"name":"required","phone":"required","whatsapp_number":"nullable","email":"required","national_id":"required","branch_id":"required","city_id":"required","district_id":"required","location_link":"nullable"}' --relationships='{"belongsTo":["City","District","Branch"]}'

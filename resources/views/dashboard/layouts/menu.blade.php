@@ -43,3 +43,8 @@
 </li>
 @endcan
 
+
+@can('view_lead')
+<li class=" nav-item"><a href="{{ route('leads.index') }}"><i class="icon-list"></i><span data-i18n="nav.leads.main" class="menu-title">{{__('dashboard.lead.title_plural')}}</span></a>
+</li>
+@endcan
