@@ -44,11 +44,11 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body col-md-12">
                                 <div class="row">
                                     <!-- Personal Information -->
                                     <div class="col-md-6">
-                                        <h5 class="text-primary mb-3">
+                                        <h5 class="text-primary mb-3 mt-1">
                                             <i class="icon-user"></i> Personal Information
                                         </h5>
                                         <div class="info-item mb-3">
@@ -91,7 +91,7 @@
 
                                     <!-- Location Information -->
                                     <div class="col-md-6">
-                                        <h5 class="text-primary mb-3">
+                                        <h5 class="text-primary mb-3 mt-1">
                                             <i class="icon-location-pin"></i> Location Information
                                         </h5>
                                         <div class="info-item mb-3">
