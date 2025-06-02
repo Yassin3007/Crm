@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lead_id')->constrained('leads')->onDelete('cascade');
             $table->string('title');
-            $table->enum('action_type', ['call', 'email', 'meeting', 'follow_up', 'note']);
+            $table->string('action_type')->nullable();
             $table->date('action_date');
             $table->time('action_time');
             $table->text('notes')->nullable();

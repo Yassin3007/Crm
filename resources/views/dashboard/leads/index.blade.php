@@ -149,11 +149,38 @@
                             </div>
                             <div class="card-body collapse in">
                                 <div class="card-block card-dashboard">
-                                    @can('create_lead')
-                                        <a href="{{ route('leads.create') }}" class="btn btn-success mb-1">
-                                            <i class="icon-plus2"></i> {{ __('dashboard.lead.add_new') }}
-                                        </a>
-                                    @endcan
+                                    <div class="row mb-1">
+                                        <div class="col-md-6">
+                                            @can('create_lead')
+                                                <a href="{{ route('leads.create') }}" class="btn btn-success mb-1">
+                                                    <i class="icon-plus2"></i> {{ __('dashboard.lead.add_new') }}
+                                                </a>
+                                            @endcan
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            <!-- Export/Import Buttons -->
+                                            @can('export_lead')
+                                                <form method="GET" action="{{ route('leads.export') }}" style="display: inline-block;">
+                                                    @foreach(request()->query() as $key => $value)
+                                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                                    @endforeach
+                                                    <button type="submit" class="btn btn-info mb-1">
+                                                        <i class="icon-download4"></i> {{ __('dashboard.common.export') }}
+                                                    </button>
+                                                </form>
+                                            @endcan
+
+                                            @can('import_lead')
+                                                <a href="{{ route('leads.import.form') }}" class="btn btn-warning mb-1">
+                                                    <i class="icon-upload4"></i> {{ __('dashboard.common.import') }}
+                                                </a>
+                                            @endcan
+
+                                            <a href="{{ route('leads.template.download') }}" class="btn btn-secondary mb-1">
+                                                <i class="icon-file-excel"></i> {{ __('dashboard.common.download_template') }}
+                                            </a>
+                                        </div>
+                                    </div>
 
                                     @if(!empty(array_filter($filters ?? [])))
                                         <div class="alert alert-info">
@@ -163,6 +190,18 @@
                                                     <span class="badge badge-primary">{{ ucfirst(str_replace('_', ' ', $key)) }}: {{ $value }}</span>
                                                 @endif
                                             @endforeach
+                                        </div>
+                                    @endif
+
+                                    {{-- Display import failures if any --}}
+                                    @if(session('import_failures'))
+                                        <div class="alert alert-warning">
+                                            <h5>{{ __('dashboard.common.import_errors') }}:</h5>
+                                            <ul class="mb-0">
+                                                @foreach(session('import_failures') as $failure)
+                                                    <li>Row {{ $failure->row() }}: {{ implode(', ', $failure->errors()) }}</li>
+                                                @endforeach
+                                            </ul>
                                         </div>
                                     @endif
                                 </div>

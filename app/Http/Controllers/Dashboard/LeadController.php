@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\LeadsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LeadRequest;
+use App\Imports\LeadsImport;
 use App\Models\Branch;
 use App\Models\City;
 use App\Models\District;
@@ -16,6 +18,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LeadController extends Controller
 {
@@ -173,7 +176,7 @@ class LeadController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'action_type' => 'required|in:call,email,meeting,follow_up,note',
+            'action_type' => 'required|in:first_meeting,field_visit,presentation_meeting,signing_contract',
             'action_date' => 'required|date',
             'action_time' => 'required|date_format:H:i',
             'notes' => 'nullable|string|max:1000',
@@ -207,6 +210,25 @@ class LeadController extends Controller
         return response()->json([
             'success' => true,
             'actions' => $actions
+        ]);
+    }
+
+    public function updateAction(Request $request, Lead $lead, LeadAction $action)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'action_type' => 'required|string',
+            'action_date' => 'required|date',
+            'action_time' => 'required',
+            'notes' => 'nullable|string'
+        ]);
+
+        $action->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Action updated successfully',
+            'action' => $action->fresh()
         ]);
     }
 
@@ -363,4 +385,107 @@ class LeadController extends Controller
         }
     }
 
+    /**
+     * Export leads to Excel
+     */
+    public function export(Request $request)
+    {
+        try {
+            return Excel::download(new LeadsExport($request), 'leads_' . date('Y-m-d_H-i-s') . '.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', __('dashboard.common.export_failed') . ': ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Show import form
+     */
+    public function importForm()
+    {
+        return view('dashboard.leads.import');
+    }
+
+    /**
+     * Import leads from Excel
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240', // 10MB max
+        ]);
+
+        try {
+            $import = new LeadsImport();
+            Excel::import($import, $request->file('file'));
+            // Get import statistics
+            $failures = $import->failures();
+            $failureCount = count($failures);
+            if ($failureCount > 0) {
+                // Store failures in session to show in view
+                session()->flash('import_failures', $failures);
+                return redirect()->route('leads.index')
+                    ->with('warning', __('dashboard.lead.import_completed_with_errors', [
+                        'success' => $import->getRowCount() - $failureCount,
+                        'failed' => $failureCount
+                    ]));
+            }
+
+            return redirect()->route('leads.index')
+                ->with('success', __('dashboard.lead.import_success'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', __('dashboard.lead.import_failed') . ': ' . $e->getMessage());
+        }
+    }
+    public function downloadTemplate()
+    {
+        $headers = [
+            'Name',
+            'Phone',
+            'WhatsApp Number',
+            'Email',
+            'National ID',
+            'Branch',
+            'City',
+            'District',
+            'Location Link'
+        ];
+
+        // Create sample data
+        $sampleData = [
+            [
+                'John Doe',
+                '1234567890',
+                '1234567890',
+                'john@example.com',
+                '12345678901234',
+                'Main Branch', // Make sure this branch exists
+                'Cairo', // Make sure this city exists
+                'Downtown', // Make sure this district exists
+                'https://maps.google.com/sample'
+            ]
+        ];
+
+        return Excel::download(new class($headers, $sampleData) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+            private $headers;
+            private $data;
+
+            public function __construct($headers, $data)
+            {
+                $this->headers = $headers;
+                $this->data = $data;
+            }
+
+            public function array(): array
+            {
+                return $this->data;
+            }
+
+            public function headings(): array
+            {
+                return $this->headers;
+            }
+        }, 'leads_template.xlsx');
+    }
 }

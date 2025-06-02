@@ -15,10 +15,7 @@ use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\LeadController;
 
 
-Route::get('/dashboard2', function () {
 
-    return view('dashboard.temp.index');
-})->name('dashboard');
 
 
 
@@ -41,6 +38,11 @@ Route::get('/reset-password', [App\Http\Controllers\AuthController::class, 'show
 
 // Profile routes (protected by auth middleware)
 Route::middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+
+        return view('dashboard.temp.index');
+    })->name('dashboard');
+
     Route::get('/statistics', function () {
 
         return view('dashboard.temp.index');
@@ -331,6 +333,10 @@ Route::middleware(['auth'])->group(function() {
         ->name('leads.actions.store')
         ->middleware('can:edit_lead');
 
+    Route::put('leads/{lead}/actions/{action}', [LeadController::class, 'updateAction'])
+        ->name('leads.actions.update')
+    ->middleware('can:edit_lead');
+
     Route::get('leads/{lead}/actions', [LeadController::class, 'getActions'])
         ->name('leads.actions.index')
         ->middleware('can:view_lead');
@@ -352,4 +358,17 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('leads/{lead}/media/{media}', [LeadController::class, 'destroyMedia'])
         ->name('leads.media.destroy')
         ->middleware('can:edit_lead');
+
+    // import and export
+
+    Route::get('leads/export/excel', [LeadController::class, 'export'])
+        ->name('leads.export')
+        ->middleware('can:export_lead');
+    Route::get('leads/import/form', [LeadController::class, 'importForm'])
+        ->name('leads.import.form')
+        ->middleware('can:import_lead');
+    Route::post('leads/import', [LeadController::class, 'import'])
+        ->name('leads.import')
+        ->middleware('can:import_lead');
+    Route::get('leads/template/download', [LeadController::class, 'downloadTemplate'])->name('leads.template.download');
 });

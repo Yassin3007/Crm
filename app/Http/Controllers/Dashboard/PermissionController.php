@@ -28,7 +28,7 @@ class PermissionController extends Controller
     {
         $permission = Permission::create($request->validated());
 
-        return redirect()->route('dashboard.permissions.index')
+        return redirect()->route('permissions.index')
             ->with('success', 'Permission created successfully.');
     }
 
