@@ -23,9 +23,63 @@ class LeadService
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-    public function getAllPaginated(int $perPage = 15 , $with = []): LengthAwarePaginator
+//    public function getAllPaginated(int $perPage = 15 , $with = [],): LengthAwarePaginator
+//    {
+//        return $this->model->with($with)->where()->latest()->paginate($perPage);
+//    }
+    public function getAllPaginated($perPage = 15, $with = [], $filters = [])
     {
-        return $this->model->with($with)->latest()->paginate($perPage);
+        $query = $this->model->query();
+
+        // Apply eager loading
+        if (!empty($with)) {
+            $query->with($with);
+        }
+
+        // Apply filters
+        if (!empty($filters)) {
+
+            // Name filter
+            if (!empty($filters['name'])) {
+                $query->where('name', 'LIKE', '%' . $filters['name'] . '%');
+            }
+
+            // Phone filter
+            if (!empty($filters['phone'])) {
+                $query->where('phone', 'LIKE', '%' . $filters['phone'] . '%');
+            }
+
+            // Email filter
+            if (!empty($filters['email'])) {
+                $query->where('email', 'LIKE', '%' . $filters['email'] . '%');
+            }
+
+            // City filter
+            if (!empty($filters['city_id'])) {
+                $query->where('city_id', $filters['city_id']);
+            }
+
+            // Branch filter
+            if (!empty($filters['branch_id'])) {
+                $query->where('branch_id', $filters['branch_id']);
+            }
+
+            // District filter
+            if (!empty($filters['district_id'])) {
+                $query->where('district_id', $filters['district_id']);
+            }
+
+            // Date range filter
+            if (!empty($filters['date_from'])) {
+                $query->whereDate('created_at', '>=', $filters['date_from']);
+            }
+
+            if (!empty($filters['date_to'])) {
+                $query->whereDate('created_at', '<=', $filters['date_to']);
+            }
+        }
+
+        return $query->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
     /**

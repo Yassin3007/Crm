@@ -262,7 +262,7 @@
                                             </div>
                                         @endforeach
                                     @else
-                                        <div class="col-12">
+                                        <div class="col-12 m-2">
                                             <div class="text-center text-muted py-5" id="no-media-message">
                                                 <i class="icon-folder font-large-2"></i>
                                                 <p class="mt-3">No media files uploaded yet.</p>

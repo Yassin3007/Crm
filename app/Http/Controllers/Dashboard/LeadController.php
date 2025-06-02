@@ -31,11 +31,33 @@ class LeadController extends Controller
      *
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $leads = $this->leadService->getAllPaginated(15,['city','branch','district']);
+        // Get filter parameters from request
+        $filters = [
+            'name' => $request->get('name'),
+            'phone' => $request->get('phone'),
+            'email' => $request->get('email'),
+            'city_id' => $request->get('city_id'),
+            'branch_id' => $request->get('branch_id'),
+            'district_id' => $request->get('district_id'),
+            'date_from' => $request->get('date_from'),
+            'date_to' => $request->get('date_to'),
+        ];
 
-        return view('dashboard.leads.index', compact('leads'));
+        // Remove empty filters
+        $filters = array_filter($filters, function($value) {
+            return !is_null($value) && $value !== '';
+        });
+
+        $leads = $this->leadService->getAllPaginated(15, ['city','branch','district'], $filters);
+
+        // Get dropdown data for filters
+        $cities = \App\Models\City::get();
+        $branches = \App\Models\Branch::get();
+        $districts = \App\Models\District::get();
+
+        return view('dashboard.leads.index', compact('leads', 'cities', 'branches', 'districts', 'filters'));
     }
 
     /**
