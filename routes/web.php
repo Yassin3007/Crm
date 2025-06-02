@@ -294,36 +294,7 @@ Route::middleware(['auth'])->group(function() {
         ->middleware('can:delete_city');
 });
 
-// Routes for City
-Route::middleware(['auth'])->group(function() {
-    Route::get('cities', [CityController::class, 'index'])
-        ->name('cities.index')
-        ->middleware('can:view_city');
 
-    Route::get('cities/create', [CityController::class, 'create'])
-        ->name('cities.create')
-        ->middleware('can:create_city');
-
-    Route::post('cities', [CityController::class, 'store'])
-        ->name('cities.store')
-        ->middleware('can:create_city');
-
-    Route::get('cities/{city}', [CityController::class, 'show'])
-        ->name('cities.show')
-        ->middleware('can:view_city');
-
-    Route::get('cities/{city}/edit', [CityController::class, 'edit'])
-        ->name('cities.edit')
-        ->middleware('can:edit_city');
-
-    Route::put('cities/{city}', [CityController::class, 'update'])
-        ->name('cities.update')
-        ->middleware('can:edit_city');
-
-    Route::delete('cities/{city}', [CityController::class, 'destroy'])
-        ->name('cities.destroy')
-        ->middleware('can:delete_city');
-});
 
 // Routes for Lead
 Route::middleware(['auth'])->group(function() {
@@ -354,4 +325,31 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('leads/{lead}', [LeadController::class, 'destroy'])
         ->name('leads.destroy')
         ->middleware('can:delete_lead');
+
+    // Lead actions routes - following the same pattern
+    Route::post('leads/{lead}/actions', [LeadController::class, 'storeAction'])
+        ->name('leads.actions.store')
+        ->middleware('can:edit_lead');
+
+    Route::get('leads/{lead}/actions', [LeadController::class, 'getActions'])
+        ->name('leads.actions.index')
+        ->middleware('can:view_lead');
+
+    Route::delete('leads/{lead}/actions/{action}', [LeadController::class, 'destroyAction'])
+        ->name('leads.actions.destroy')
+        ->middleware('can:edit_lead');
+
+
+    // lead media routes
+    Route::post('leads/{lead}/media', [LeadController::class, 'storeMedia'])
+        ->name('leads.media.store')
+        ->middleware('can:edit_lead');
+
+    Route::get('leads/{lead}/download-media/{media}', [LeadController::class, 'downloadMedia'])
+        ->name('leads.media.download')
+        ->middleware('can:view_lead');
+
+    Route::delete('leads/{lead}/media/{media}', [LeadController::class, 'destroyMedia'])
+        ->name('leads.media.destroy')
+        ->middleware('can:edit_lead');
 });

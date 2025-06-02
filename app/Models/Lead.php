@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Lead extends Model
 {
@@ -46,5 +47,49 @@ class Lead extends Model
     public function branch()
     {
         return $this->belongsTo(\App\Models\Branch::class);
+    }
+    public function actions()
+    {
+        return $this->hasMany(LeadAction::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the latest action for the lead.
+     */
+    public function latestAction()
+    {
+        return $this->hasOne(LeadAction::class)->latestOfMany();
+    }
+
+    /**
+     * Get actions count for the lead.
+     */
+    public function getActionsCountAttribute()
+    {
+        return $this->actions()->count();
+    }
+
+    /**
+     * Get the last contact date.
+     */
+    public function getLastContactDateAttribute()
+    {
+        $latestAction = $this->latestAction;
+        return $latestAction ? $latestAction->created_at : null;
+    }
+
+    public function media(): HasMany
+    {
+        return $this->hasMany(LeadMedia::class);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(LeadMedia::class)->where('file_type', 'image');
+    }
+
+    public function documents(): HasMany
+    {
+        return $this->hasMany(LeadMedia::class)->where('file_type', 'document');
     }
 }
