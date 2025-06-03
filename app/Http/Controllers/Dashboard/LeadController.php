@@ -20,15 +20,19 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
-
+use App\Services\GoogleMeetService;
 class LeadController extends Controller
 {
     protected LeadService $leadService;
+    protected GoogleMeetService  $googleMeetService;
 
-    public function __construct(LeadService $leadService)
+    public function __construct(LeadService $leadService ,GoogleMeetService $googleMeetService)
     {
         $this->leadService = $leadService;
+        $this->googleMeetService = $googleMeetService;
+
     }
+
 
     /**
      * Display a listing of the resource.
@@ -192,13 +196,64 @@ class LeadController extends Controller
             'notes' => $request->notes,
         ]);
 
+        // Create Google Meet for first_meeting action type
+        if ($request->action_type === 'first_meeting') {
+            try {
+                $googleMeetService = app(GoogleMeetService::class);
+
+                // Calculate end time (default 1 hour meeting)
+                $startTime = $request->action_time;
+                $endTime = \Carbon\Carbon::createFromFormat('H:i', $startTime)
+                    ->addHour()
+                    ->format('H:i');
+
+                $meetingResult = $googleMeetService->createMeeting(
+                    $request->title,
+                    $request->notes ?? 'First meeting with lead: ' . $lead->name,
+                    $request->action_date,
+                    $startTime,
+                    $endTime,
+                    'UTC', // You can change this to your preferred timezone
+                    [$lead->email] // Lead's email as attendee
+                );
+                if ($meetingResult['success']) {
+                    // Update the action with Google Meet link
+                    $action->update([
+                        'google_meet_link' => $meetingResult['meet_link'],
+                        'google_event_id' => $meetingResult['event_id']
+                    ]);
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Action added successfully with Google Meet created',
+                        'action' => $action->load('lead'),
+                        'meet_link' => $meetingResult['meet_link']
+                    ]);
+                } else {
+                    // Meeting creation failed, but action was created
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Action added successfully, but Google Meet creation failed: ' . $meetingResult['error'],
+                        'action' => $action->load('lead')
+                    ], 206); // 206 Partial Content
+                }
+
+            } catch (\Exception $e) {
+                // Google Meet creation failed, but action was created
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Action added successfully, but Google Meet creation failed: ' . $e->getMessage(),
+                    'action' => $action->load('lead')
+                ], 206);
+            }
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Action added successfully',
             'action' => $action->load('lead')
         ]);
     }
-
     /**
      * Get actions for a specific lead.
      */
@@ -440,4 +495,26 @@ class LeadController extends Controller
     {
         return Excel::download(new LeadsTemplateExport(), 'leads_template.xlsx');
     }
+
+    public function redirectToGoogle()
+    {
+        $authUrl = $this->googleMeetService->getAuthUrl();
+        return redirect($authUrl);
+    }
+
+    public function handleGoogleCallback(Request $request)
+    {
+        if ($request->has('code')) {
+            try {
+                $token = $this->googleMeetService->handleCallback($request->code);
+
+                return redirect()->route('dashboard')->with('success', 'Google account connected successfully!');
+            } catch (\Exception $e) {
+                return redirect()->route('dashboard')->with('error', 'Failed to connect Google account: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->route('dashboard')->with('error', 'Authorization failed');
+    }
+
 }

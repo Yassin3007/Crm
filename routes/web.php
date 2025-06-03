@@ -36,6 +36,9 @@ Route::get('/forgot-password', [App\Http\Controllers\AuthController::class, 'sho
 Route::get('/reset-password', [App\Http\Controllers\AuthController::class, 'showResetPasswordForm'])->name('password.reset')->middleware('guest');
 
 
+Route::get('/auth/google', [LeadController::class, 'redirectToGoogle'])->name('google.auth');
+Route::get('/auth/google/callback', [LeadController::class, 'handleGoogleCallback'])->name('google.callback');
+
 
 // Profile routes (protected by auth middleware)
 Route::middleware(['auth'])->group(function () {
