@@ -3,6 +3,7 @@
 use App\Http\Controllers\Dashboard\PermissionController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\StatisticsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\PostController;
 use App\Http\Controllers\Dashboard\CompanyController;
@@ -38,9 +39,13 @@ Route::get('/reset-password', [App\Http\Controllers\AuthController::class, 'show
 
 // Profile routes (protected by auth middleware)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard.index');
-    })->name('dashboard');
+
+//    Route::prefix('dashboard')->group(function () {
+        Route::get('/statistics', [StatisticsController::class, 'index'])->name('dashboard');
+//        Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
+        Route::get('/statistics/chart-data', [StatisticsController::class, 'getChartDataAjax'])->name('statistics.chart-data');
+//    });
+    Route::get('/', [\App\Http\Controllers\Dashboard\StatisticsController::class,'index'])->name('dashboard');
 
 //    Route::get('/statistics', function () {
 //
