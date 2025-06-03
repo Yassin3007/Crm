@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Exports\LeadsExport;
+use App\Exports\LeadsTemplateExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LeadRequest;
 use App\Imports\LeadsImport;
@@ -411,81 +412,32 @@ class LeadController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv|max:10240', // 10MB max
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
         ]);
 
         try {
             $import = new LeadsImport();
             Excel::import($import, $request->file('file'));
-            // Get import statistics
-            $failures = $import->failures();
-            $failureCount = count($failures);
-            if ($failureCount > 0) {
-                // Store failures in session to show in view
-                session()->flash('import_failures', $failures);
-                return redirect()->route('leads.index')
-                    ->with('warning', __('dashboard.lead.import_completed_with_errors', [
-                        'success' => $import->getRowCount() - $failureCount,
-                        'failed' => $failureCount
-                    ]));
-            }
 
-            return redirect()->route('leads.index')
-                ->with('success', __('dashboard.lead.import_success'));
+            $importedCount = $import->getRowCount();
+            $failures = $import->getFailures();
+
+            if ($failures->isNotEmpty()) {
+                session()->flash('import_failures', $failures);
+                session()->flash('success', __('dashboard.lead.import_partial_success', ['count' => $importedCount]));
+            } else {
+                session()->flash('success', __('dashboard.lead.import_success', ['count' => $importedCount]));
+            }
 
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', __('dashboard.lead.import_failed') . ': ' . $e->getMessage());
+            session()->flash('error', __('dashboard.lead.import_error') . ': ' . $e->getMessage());
         }
+
+        return redirect()->route('leads.index');
     }
+
     public function downloadTemplate()
     {
-        $headers = [
-            'Name',
-            'Phone',
-            'WhatsApp Number',
-            'Email',
-            'National ID',
-            'Branch',
-            'City',
-            'District',
-            'Location Link'
-        ];
-
-        // Create sample data
-        $sampleData = [
-            [
-                'John Doe',
-                '1234567890',
-                '1234567890',
-                'john@example.com',
-                '12345678901234',
-                'Main Branch', // Make sure this branch exists
-                'Cairo', // Make sure this city exists
-                'Downtown', // Make sure this district exists
-                'https://maps.google.com/sample'
-            ]
-        ];
-
-        return Excel::download(new class($headers, $sampleData) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
-            private $headers;
-            private $data;
-
-            public function __construct($headers, $data)
-            {
-                $this->headers = $headers;
-                $this->data = $data;
-            }
-
-            public function array(): array
-            {
-                return $this->data;
-            }
-
-            public function headings(): array
-            {
-                return $this->headers;
-            }
-        }, 'leads_template.xlsx');
+        return Excel::download(new LeadsTemplateExport(), 'leads_template.xlsx');
     }
 }

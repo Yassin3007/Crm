@@ -146,6 +146,59 @@
                                         <li><a data-action="close"><i class="icon-cross2"></i></a></li>
                                     </ul>
                                 </div>
+                                {{-- Add this section after line 147 in your existing index.blade.php, replacing the existing import failures section --}}
+
+                                {{-- Display success messages --}}
+                                @if(session('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        {{ session('success') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                                {{-- Display error messages --}}
+                                @if(session('error'))
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        {{ session('error') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                                {{-- Display import failures if any --}}
+                                @if(session('import_failures'))
+                                    <div class="alert alert-warning">
+                                        <h5><i class="icon-warning"></i> {{ __('dashboard.common.import_errors') }}:</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                <tr>
+                                                    <th>{{ __('dashboard.common.row') }}</th>
+                                                    <th>{{ __('dashboard.common.errors') }}</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach(session('import_failures') as $failure)
+                                                    <tr>
+                                                        <td>{{ $failure->row() }}</td>
+                                                        <td>
+                                                            @foreach($failure->errors() as $error)
+                                                                <span class="badge badge-danger mr-1">{{ $error }}</span>
+                                                            @endforeach
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="icon-info"></i> {{ __('dashboard.common.import_error_note') }}
+                                        </small>
+                                    </div>
+                                @endif
                             </div>
                             <div class="card-body collapse in">
                                 <div class="card-block card-dashboard">

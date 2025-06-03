@@ -39,14 +39,13 @@ Route::get('/reset-password', [App\Http\Controllers\AuthController::class, 'show
 // Profile routes (protected by auth middleware)
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
-
-        return view('dashboard.temp.index');
+        return view('dashboard.index');
     })->name('dashboard');
 
-    Route::get('/statistics', function () {
-
-        return view('dashboard.temp.index');
-    })->name('dashboard');
+//    Route::get('/statistics', function () {
+//
+//        return view('dashboard.index');
+//    })->name('dashboard');
     // Profile edit page
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 
