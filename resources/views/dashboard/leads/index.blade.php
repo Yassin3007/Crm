@@ -247,16 +247,16 @@
                                     @endif
 
                                     {{-- Display import failures if any --}}
-                                    @if(session('import_failures'))
-                                        <div class="alert alert-warning">
-                                            <h5>{{ __('dashboard.common.import_errors') }}:</h5>
-                                            <ul class="mb-0">
-                                                @foreach(session('import_failures') as $failure)
-                                                    <li>Row {{ $failure->row() }}: {{ implode(', ', $failure->errors()) }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
+{{--                                    @if(session('import_failures'))--}}
+{{--                                        <div class="alert alert-warning">--}}
+{{--                                            <h5>{{ __('dashboard.common.import_errors') }}:</h5>--}}
+{{--                                            <ul class="mb-0">--}}
+{{--                                                @foreach(session('import_failures') as $failure)--}}
+{{--                                                    <li>Row {{ $failure->row() }}: {{ implode(', ', $failure->errors()) }}</li>--}}
+{{--                                                @endforeach--}}
+{{--                                            </ul>--}}
+{{--                                        </div>--}}
+{{--                                    @endif--}}
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table">
