@@ -1,5 +1,5 @@
 {{-- Dashboard --}}
-<li class=" nav-item"><a href="{{route('dashboard')}}"><i class="icon-home3"></i><span data-i18n="nav.changelog.main" class="menu-title">Dashboard</span></a>
+<li class=" nav-item"><a href="{{route('dashboard')}}"><i class="icon-home3"></i><span data-i18n="nav.changelog.main" class="menu-title">{{__('dashboard.common.dashboard')}}</span></a>
 </li>
 
 {{-- User Management Section --}}
@@ -9,12 +9,12 @@
 @endcan
 
 @can('view_role')
-    <li class=" nav-item"><a href="{{ route('roles.index') }}"><i class="icon-badge"></i><span data-i18n="nav.roles.main" class="menu-title">Roles</span></a>
+    <li class=" nav-item"><a href="{{ route('roles.index') }}"><i class="icon-badge"></i><span data-i18n="nav.roles.main" class="menu-title">{{__('dashboard.common.roles')}}</span></a>
     </li>
 @endcan
 
 @can('view_permission')
-    <li class=" nav-item"><a href="{{ route('permissions.index') }}"><i class="icon-key"></i><span data-i18n="nav.permissions.main" class="menu-title">Permissions</span></a>
+    <li class=" nav-item"><a href="{{ route('permissions.index') }}"><i class="icon-key"></i><span data-i18n="nav.permissions.main" class="menu-title">{{__('dashboard.common.permissions')}}</span></a>
     </li>
 @endcan
 

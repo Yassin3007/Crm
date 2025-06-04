@@ -42,6 +42,8 @@ return [
             'row' => 'Row',
             'errors' => 'Errors',
             'import_error_note' => 'The rows above had errors and were not imported. Other valid rows were imported successfully.',
+            'roles' => 'Roles',
+            'permissions' => 'Permissions',
 
 
         ],
