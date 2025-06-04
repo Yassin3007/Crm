@@ -47,10 +47,7 @@ class GoogleMeetService
     public function createMeeting($title, $description, $date, $startTime, $endTime, $timezone = 'UTC', $attendees = [])
     {
         try {
-            $test = "GOOGLE_CLIENT_ID=103850074441-jdupg8g0spbeh5i3ck4htu2tpiv923mk.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=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
-GOOGLE_REDIRECT_URI=http://127.0.0.1:8000/auth/google/callback
-" ;
+
             // Set access token (you need to handle OAuth flow separately)
             $accessToken = $this->getStoredAccessToken();
 
