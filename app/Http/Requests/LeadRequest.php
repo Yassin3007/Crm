@@ -28,10 +28,10 @@ class LeadRequest extends FormRequest
             'phone' => 'required',
             'whatsapp_number' => 'nullable',
             'email' => 'required',
-            'national_id' => 'required',
-            'branch_id' => 'required',
-            'city_id' => 'required',
-            'district_id' => 'required',
+            'national_id' => 'nullable',
+            'branch_id' => 'nullable',
+            'city_id' => 'nullable',
+            'district_id' => 'nullable',
             'location_link' => 'nullable',
         ];
     }
