@@ -2,152 +2,240 @@
 
 @section('page_styles')
     <style>
+        body {
+            visibility: hidden; /* Hide content until styles are applied */
+        }
+        body.loaded {
+            visibility: visible; /* Show content when styles are loaded */
+        }
+        /* New improved stats cards */
         .stats-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 25px;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             position: relative;
-            overflow: hidden;
+            border-left: 4px solid #e0e0e0;
+            margin-bottom: 20px;
         }
 
         .stats-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .stats-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            transform: translate(30px, -30px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
         }
 
         .stats-card.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-left-color: #667eea;
         }
 
         .stats-card.success {
-            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            border-left-color: #28a745;
         }
 
         .stats-card.info {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            border-left-color: #17a2b8;
         }
 
         .stats-card.warning {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            border-left-color: #ffc107;
         }
 
         .stats-card.danger {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border-left-color: #dc3545;
         }
 
         .stats-card.purple {
-            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            border-left-color: #6f42c1;
         }
 
         .stats-card.teal {
-            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            border-left-color: #20c997;
         }
 
         .stats-card.orange {
-            background: linear-gradient(135deg, #ff7f50 0%, #ff6347 100%);
+            border-left-color: #fd7e14;
+        }
+
+        .stats-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .stats-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .stats-card.primary .stats-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .stats-card.success .stats-icon {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .stats-card.info .stats-icon {
+            background: linear-gradient(135deg, #17a2b8, #007bff);
+        }
+
+        .stats-card.warning .stats-icon {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+        }
+
+        .stats-card.danger .stats-icon {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+        }
+
+        .stats-card.purple .stats-icon {
+            background: linear-gradient(135deg, #6f42c1, #e83e8c);
+        }
+
+        .stats-card.teal .stats-icon {
+            background: linear-gradient(135deg, #20c997, #17a2b8);
+        }
+
+        .stats-card.orange .stats-icon {
+            background: linear-gradient(135deg, #fd7e14, #ffc107);
+        }
+
+        .stats-content {
+            flex: 1;
         }
 
         .stats-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin: 10px 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+            line-height: 1.2;
         }
 
         .stats-label {
             font-size: 0.9rem;
-            opacity: 0.9;
+            color: #6c757d;
+            font-weight: 500;
+            margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .stats-icon {
-            font-size: 2.5rem;
-            opacity: 0.3;
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+        .stats-subtitle {
+            font-size: 0.8rem;
+            color: #868e96;
+            margin-top: 4px;
         }
 
+        /* Chart containers */
         .chart-container {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-            /* FIXED: Set explicit height for chart containers */
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
             position: relative;
         }
 
-        .chart-container .chart-wrapper {
+        .chart-container h4 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .chart-wrapper {
             height: 400px;
             position: relative;
+            min-height: 300px;
         }
 
         .chart-container.small .chart-wrapper {
             height: 300px;
+            min-height: 250px;
         }
 
+        /* Filter container */
         .filter-container {
             background: white;
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
         }
 
+        /* Conversion rate cards */
         .conversion-rate {
             background: white;
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+            border: 1px solid #e9ecef;
         }
 
         .conversion-rate .rate {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
             color: #667eea;
+            margin-bottom: 4px;
         }
 
+        .conversion-rate div:last-child {
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Activity and performance sections */
         .recent-activity {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             max-height: 500px;
             overflow-y: auto;
         }
 
+        .recent-activity h4 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
         .activity-item {
-            padding: 15px;
+            padding: 16px;
             border-left: 3px solid #667eea;
             background: #f8f9fa;
-            margin-bottom: 10px;
-            border-radius: 5px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
         }
 
         .top-performing {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .top-performing h4 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .top-performing h6 {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 12px;
         }
 
         .top-item {
@@ -155,46 +243,76 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 0;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #e9ecef;
         }
 
         .top-item:last-child {
             border-bottom: none;
         }
 
+        /* Loading states */
         .loading {
             text-align: center;
-            padding: 20px;
-            color: #666;
+            padding: 40px 20px;
+            color: #6c757d;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
+            background: white;
+            border-radius: 8px;
         }
 
-        /* FIXED: Ensure canvas elements are properly constrained */
+        /* Canvas styling */
         canvas {
             max-width: 100% !important;
             height: auto !important;
         }
 
+        /* Page header */
+        .content-header-title {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Responsive design */
         @media (max-width: 768px) {
             .stats-card {
-                margin-bottom: 20px;
+                margin-bottom: 16px;
             }
 
             .stats-number {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
 
-            .chart-container .chart-wrapper {
+            .chart-wrapper {
                 height: 300px;
+                min-height: 250px;
             }
 
             .chart-container.small .chart-wrapper {
                 height: 250px;
+                min-height: 200px;
             }
+
+            .stats-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats-icon {
+                margin-bottom: 12px;
+            }
+        }
+
+        /* Ensure proper spacing */
+        .row {
+            margin-bottom: 0;
+        }
+
+        .col-lg-3, .col-md-6, .col-sm-12 {
+            padding-bottom: 0;
         }
     </style>
 @endsection
@@ -260,39 +378,55 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="stats-card primary">
-                            <div class="stats-icon">
-                                <i class="icon-location"></i>
+                            <div class="stats-card-header">
+                                <div class="stats-content">
+                                    <div class="stats-number">{{ number_format($stats['cities_count']) }}</div>
+                                    <div class="stats-label">Total Cities</div>
+                                </div>
+                                <div class="stats-icon">
+                                    <i class="icon-location"></i>
+                                </div>
                             </div>
-                            <div class="stats-number">{{ number_format($stats['cities_count']) }}</div>
-                            <div class="stats-label">Total Cities</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="stats-card success">
-                            <div class="stats-icon">
-                                <i class="icon-office"></i>
+                            <div class="stats-card-header">
+                                <div class="stats-content">
+                                    <div class="stats-number">{{ number_format($stats['branches_count']) }}</div>
+                                    <div class="stats-label">Total Branches</div>
+                                </div>
+                                <div class="stats-icon">
+                                    <i class="icon-office"></i>
+                                </div>
                             </div>
-                            <div class="stats-number">{{ number_format($stats['branches_count']) }}</div>
-                            <div class="stats-label">Total Branches</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="stats-card info">
-                            <div class="stats-icon">
-                                <i class="icon-map"></i>
+                            <div class="stats-card-header">
+                                <div class="stats-content">
+                                    <div class="stats-number">{{ number_format($stats['districts_count']) }}</div>
+                                    <div class="stats-label">Total Districts</div>
+                                </div>
+                                <div class="stats-icon">
+                                    <i class="icon-map"></i>
+                                </div>
                             </div>
-                            <div class="stats-number">{{ number_format($stats['districts_count']) }}</div>
-                            <div class="stats-label">Total Districts</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="stats-card warning">
-                            <div class="stats-icon">
-                                <i class="icon-users"></i>
+                            <div class="stats-card-header">
+                                <div class="stats-content">
+                                    <div class="stats-number">{{ number_format($stats['leads_count']) }}</div>
+                                    <div class="stats-label">Leads (Period)</div>
+                                    <div class="stats-subtitle">Total: {{ number_format($stats['total_leads']) }}</div>
+                                </div>
+                                <div class="stats-icon">
+                                    <i class="icon-users"></i>
+                                </div>
                             </div>
-                            <div class="stats-number">{{ number_format($stats['leads_count']) }}</div>
-                            <div class="stats-label">Leads (Period)</div>
-                            <small style="opacity: 0.8;">Total: {{ number_format($stats['total_leads']) }}</small>
                         </div>
                     </div>
                 </div>
@@ -301,38 +435,54 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="stats-card danger">
-                            <div class="stats-icon">
-                                <i class="icon-calendar"></i>
+                            <div class="stats-card-header">
+                                <div class="stats-content">
+                                    <div class="stats-number" id="first-meetings-count">{{ number_format($leadActions['first_meeting']) }}</div>
+                                    <div class="stats-label">First Meetings</div>
+                                </div>
+                                <div class="stats-icon">
+                                    <i class="icon-calendar"></i>
+                                </div>
                             </div>
-                            <div class="stats-number" id="first-meetings-count">{{ number_format($leadActions['first_meeting']) }}</div>
-                            <div class="stats-label">First Meetings</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="stats-card purple">
-                            <div class="stats-icon">
-                                <i class="icon-home"></i>
+                            <div class="stats-card-header">
+                                <div class="stats-content">
+                                    <div class="stats-number" id="field-visits-count">{{ number_format($leadActions['field_visit']) }}</div>
+                                    <div class="stats-label">Field Visits</div>
+                                </div>
+                                <div class="stats-icon">
+                                    <i class="icon-home"></i>
+                                </div>
                             </div>
-                            <div class="stats-number" id="field-visits-count">{{ number_format($leadActions['field_visit']) }}</div>
-                            <div class="stats-label">Field Visits</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="stats-card teal">
-                            <div class="stats-icon">
-                                <i class="icon-presentation"></i>
+                            <div class="stats-card-header">
+                                <div class="stats-content">
+                                    <div class="stats-number" id="presentations-count">{{ number_format($leadActions['presentation_meeting']) }}</div>
+                                    <div class="stats-label">Presentations</div>
+                                </div>
+                                <div class="stats-icon">
+                                    <i class="icon-presentation"></i>
+                                </div>
                             </div>
-                            <div class="stats-number" id="presentations-count">{{ number_format($leadActions['presentation_meeting']) }}</div>
-                            <div class="stats-label">Presentations</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="stats-card orange">
-                            <div class="stats-icon">
-                                <i class="icon-file-text"></i>
+                            <div class="stats-card-header">
+                                <div class="stats-content">
+                                    <div class="stats-number" id="contracts-count">{{ number_format($leadActions['signing_contract']) }}</div>
+                                    <div class="stats-label">Signed Contracts</div>
+                                </div>
+                                <div class="stats-icon">
+                                    <i class="icon-file-text"></i>
+                                </div>
                             </div>
-                            <div class="stats-number" id="contracts-count">{{ number_format($leadActions['signing_contract']) }}</div>
-                            <div class="stats-label">Signed Contracts</div>
                         </div>
                     </div>
                 </div>
@@ -342,9 +492,14 @@
                     <!-- Lead Actions Timeline -->
                     <div class="col-lg-8">
                         <div class="chart-container">
-                            <h4 class="mb-3">Lead Actions Timeline</h4>
+                            <h4>Lead Actions Timeline</h4>
                             <div class="chart-wrapper">
-                                <div id="loadingChart" class="loading">Loading chart data...</div>
+                                <div id="loadingChart" class="loading">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <div class="mt-2">Loading chart data...</div>
+                                </div>
                                 <canvas id="leadActionsChart" style="display: none;"></canvas>
                             </div>
                         </div>
@@ -353,9 +508,14 @@
                     <!-- Action Distribution Pie Chart -->
                     <div class="col-lg-4">
                         <div class="chart-container small">
-                            <h4 class="mb-3">Action Distribution</h4>
+                            <h4>Action Distribution</h4>
                             <div class="chart-wrapper">
-                                <div id="loadingPie" class="loading">Loading chart data...</div>
+                                <div id="loadingPie" class="loading">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <div class="mt-2">Loading chart data...</div>
+                                </div>
                                 <canvas id="actionDistributionChart" style="display: none;"></canvas>
                             </div>
                         </div>
@@ -366,7 +526,7 @@
                     <!-- Conversion Rates -->
                     <div class="col-lg-6">
                         <div class="chart-container">
-                            <h4 class="mb-3">Conversion Rates</h4>
+                            <h4>Conversion Rates</h4>
                             <div class="row">
                                 <div class="col-6">
                                     <div class="conversion-rate">
@@ -399,9 +559,14 @@
                     <!-- Leads Timeline -->
                     <div class="col-lg-6">
                         <div class="chart-container">
-                            <h4 class="mb-3">Leads Growth</h4>
+                            <h4>Leads Growth</h4>
                             <div class="chart-wrapper">
-                                <div id="loadingLeads" class="loading">Loading chart data...</div>
+                                <div id="loadingLeads" class="loading">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <div class="mt-2">Loading chart data...</div>
+                                </div>
                                 <canvas id="leadsTimelineChart" style="display: none;"></canvas>
                             </div>
                         </div>
@@ -412,7 +577,7 @@
                     <!-- Recent Activities -->
                     <div class="col-lg-6">
                         <div class="recent-activity">
-                            <h4 class="mb-3">Recent Activities</h4>
+                            <h4>Recent Activities</h4>
                             @forelse($recentActivities as $activity)
                                 <div class="activity-item">
                                     <strong>{{ ucfirst(str_replace('_', ' ', $activity['action_type'])) }}</strong>
@@ -428,7 +593,7 @@
                     <!-- Top Performing -->
                     <div class="col-lg-6">
                         <div class="top-performing">
-                            <h4 class="mb-3">Top Performing</h4>
+                            <h4>Top Performing</h4>
 
                             <h6>Top Cities by Leads</h6>
                             @forelse($topStats['top_cities'] as $city)

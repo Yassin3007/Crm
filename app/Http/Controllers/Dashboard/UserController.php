@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -28,7 +29,7 @@ class UserController extends Controller
      */
     public function index(): View
     {
-        $users = $this->userService->getAllPaginated(15 , ['company','team']);
+        $users = $this->userService->getAllPaginated();
 
         return view('dashboard.users.index', compact('users'));
     }
@@ -40,22 +41,29 @@ class UserController extends Controller
      */
     public function create(): View
     {
-        $companies = Company::query()->active()->get();
-        $teams = Team::query()->active()->get();
-
-        return view('dashboard.users.create',compact('companies','teams'));
+        $roles = Role::all(); // Get all available roles
+        return view('dashboard.users.create', compact('roles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param UserRequest $request
-     * @return RedirectResponse
-     */
     public function store(UserRequest $request): RedirectResponse
     {
         try {
-            $this->userService->create($request->validated());
+            $userData = $request->validated();
+            $roleId = $userData['role'] ?? null;
+
+            // Remove role from user data as it's not a user field
+            unset($userData['role']);
+
+            // Create the user
+            $user = $this->userService->create($userData);
+
+            // Assign role to user if role is selected
+            if ($roleId) {
+                $role = Role::find($roleId);
+                if ($role) {
+                    $user->assignRole($role->name);
+                }
+            }
 
             return redirect()->route('users.index')
                 ->with('success', 'User created successfully.');
@@ -85,9 +93,8 @@ class UserController extends Controller
      */
     public function edit(User $user): View
     {
-        $companies = Company::query()->active()->get();
-        $teams = Team::query()->active()->get();
-        return view('dashboard.users.edit', compact('user','companies','teams'));
+        $roles = Role::all();
+        return view('dashboard.users.edit', compact('user','roles'));
     }
 
     /**
@@ -100,8 +107,16 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user): RedirectResponse
     {
         try {
-            $this->userService->update($user, $request->validated());
+            $userData = $request->validated();
+            $roleId = $userData['role'] ?? null;
 
+            $this->userService->update($user, $request->validated());
+            if ($roleId) {
+                $role = Role::find($roleId);
+                if ($role) {
+                    $user->syncRoles($role->name);
+                }
+            }
             return redirect()->route('users.index')
                 ->with('success', 'User updated successfully.');
         } catch (\Exception $e) {

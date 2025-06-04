@@ -122,7 +122,11 @@ return [
                 'email' => 'Email',
                 'password' => 'Password',
                 'phone' => 'Phone',
+                'role' => 'Role',
             ],
+            'select_role' => 'Select Role',
+            'role_required' => 'Please select a role for the user.',
+            'role_invalid' => 'The selected role is invalid.',
         ],
         'category' => [
             'title' => 'Category',
