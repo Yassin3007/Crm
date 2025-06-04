@@ -251,18 +251,7 @@
         }
 
         /* Loading states */
-        .loading {
-            text-align: center;
-            padding: 40px 20px;
-            color: #6c757d;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            background: white;
-            border-radius: 8px;
-        }
+
 
         /* Canvas styling */
         canvas {
