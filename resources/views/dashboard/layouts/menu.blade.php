@@ -47,6 +47,6 @@
 @endcan
 
 @can('view_source')
-<li class=" nav-item"><a href="{{ route('sources.index') }}"><i class="icon-list"></i><span data-i18n="nav.sources.main" class="menu-title">{{__('dashboard.source.title_plural')}}</span></a>
+<li class=" nav-item"><a href="{{ route('sources.index') }}"><i class="icon-folder"></i><span data-i18n="nav.sources.main" class="menu-title">{{__('dashboard.source.title_plural')}}</span></a>
 </li>
 @endcan
