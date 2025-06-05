@@ -251,7 +251,7 @@ return [
             'phone' => 'الهاتف',
             'whatsapp_number' => 'رقم الواتساب',
             'email' => 'البريد الإلكتروني',
-            'national_id' => 'الرقم القومي',
+            'national_id' => 'رقم الهوية',
             'branch_id' => 'معرف الفرع',
             'city_id' => 'معرف المدينة',
             'district_id' => 'معرف الحي',
