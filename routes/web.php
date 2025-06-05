@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\DistrictController;
 use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\LeadController;
+use App\Http\Controllers\Dashboard\SourceController;
 
 
 
@@ -378,4 +379,36 @@ Route::middleware(['auth'])->group(function() {
         ->name('leads.import')
         ->middleware('can:import_lead');
     Route::get('leads/template/download', [LeadController::class, 'downloadTemplate'])->name('leads.template.download');
+});
+
+
+// Routes for Source
+Route::middleware(['auth'])->group(function() {
+    Route::get('sources', [SourceController::class, 'index'])
+        ->name('sources.index')
+        ->middleware('can:view_source');
+
+    Route::get('sources/create', [SourceController::class, 'create'])
+        ->name('sources.create')
+        ->middleware('can:create_source');
+
+    Route::post('sources', [SourceController::class, 'store'])
+        ->name('sources.store')
+        ->middleware('can:create_source');
+
+    Route::get('sources/{source}', [SourceController::class, 'show'])
+        ->name('sources.show')
+        ->middleware('can:view_source');
+
+    Route::get('sources/{source}/edit', [SourceController::class, 'edit'])
+        ->name('sources.edit')
+        ->middleware('can:edit_source');
+
+    Route::put('sources/{source}', [SourceController::class, 'update'])
+        ->name('sources.update')
+        ->middleware('can:edit_source');
+
+    Route::delete('sources/{source}', [SourceController::class, 'destroy'])
+        ->name('sources.destroy')
+        ->middleware('can:delete_source');
 });

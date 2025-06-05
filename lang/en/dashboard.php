@@ -31,7 +31,6 @@ return [
             'import' => 'Import',
             'export' => 'Export',
             'download_template' => 'Download Template',
-
             'import_instructions' => 'Import Instructions',
             'download_template_first' => 'Download the template file first',
             'fill_data_exactly' => 'Fill the data exactly as shown in the headers',
@@ -44,8 +43,6 @@ return [
             'import_error_note' => 'The rows above had errors and were not imported. Other valid rows were imported successfully.',
             'roles' => 'Roles',
             'permissions' => 'Permissions',
-
-
         ],
         'company' => [
             'title' => 'Company',
@@ -266,6 +263,29 @@ return [
             'import_success' => ':count leads imported successfully.',
             'import_partial_success' => ':count leads imported successfully. Some rows had errors.',
             'import_error' => 'Import failed',
-
+        ],
+        'source' => [
+            'title' => 'Source',
+            'title_plural' => 'Sources',
+            'management' => 'Sources Management',
+            'list' => 'Sources List',
+            'create' => 'Create Source',
+            'edit' => 'Edit Source',
+            'view' => 'View Source',
+            'delete' => 'Delete Source',
+            'add_new' => 'Add New Source',
+            'create_new' => 'Create New Source',
+            'update' => 'Update Source',
+            'show' => 'Show Source',
+            'actions' => 'Actions',
+            'no_records' => 'No Sources found.',
+            'fill_required' => 'Please fill in all required fields to create a new Source.',
+            'update_info' => 'Update the information for this Source.',
+            'delete_confirm' => 'Are you sure you want to delete this Source?',
+            'fields' => [
+                'name_en' => 'Name En',
+                'name_ar' => 'Name Ar',
+                'is_active' => 'Is Active',
+            ],
         ],
     ];

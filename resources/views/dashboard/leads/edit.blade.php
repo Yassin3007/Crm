@@ -146,22 +146,22 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label
-                                                        for="city_id">{{ __("dashboard.lead.fields.city_id") }}</label>
-                                                    <select id="city_id" name="city_id"
-                                                            class="form-control @error('city_id') is-invalid @enderror"
+                                                        for="source_id">{{ __("dashboard.source.title") }}</label>
+                                                    <select id="source_id" name="source_id"
+                                                            class="form-control @error('source_id') is-invalid @enderror"
                                                             data-toggle="tooltip" data-trigger="hover"
                                                             data-placement="top"
-                                                            data-title="{{ __("dashboard.lead.fields.city_id") }}">
+                                                            data-title="{{ __("dashboard.source.title") }}">
                                                         <option
-                                                            value="">{{ __("dashboard.common.select") }} {{ __("dashboard.lead.fields.city_id") }}</option>
-                                                        @foreach($cities as $city)
+                                                            value="">{{ __("dashboard.common.select") }} {{ __("dashboard.source.title") }}</option>
+                                                        @foreach($sources as $source)
                                                             <option
-                                                                value="{{ $city->id }}" {{ isset($lead) && $lead->city_id == $city->id ? 'selected' : '' }}>
-                                                                {{ $city->name }}
+                                                                value="{{ $source->id }}" {{ isset($lead) && $lead->source_id == $source->id ? 'selected' : '' }}>
+                                                                {{ $source->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    @error('city_id')
+                                                    @error('source_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>

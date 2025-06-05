@@ -15,7 +15,7 @@ class Lead extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'phone', 'whatsapp_number', 'email', 'national_id', 'branch_id', 'city_id', 'district_id', 'location_link'];
+    protected $fillable = ['name', 'phone', 'whatsapp_number', 'email', 'national_id', 'branch_id', 'source_id', 'district_id', 'location_link'];
 
     /**
      * Get the table associated with the model.
@@ -37,6 +37,11 @@ class Lead extends Model
     public function city()
     {
         return $this->belongsTo(\App\Models\City::class);
+    }
+
+    public function source()
+    {
+        return $this->belongsTo(\App\Models\Source::class);
     }
 
     public function district()

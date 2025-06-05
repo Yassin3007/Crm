@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LeadRequest extends FormRequest
+class SourceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,9 @@ class LeadRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'phone' => 'required',
-            'whatsapp_number' => 'nullable',
-            'email' => 'required',
-            'national_id' => 'nullable',
-            'branch_id' => 'nullable',
-            'source_id' => 'nullable',
-            'district_id' => 'nullable',
-            'location_link' => 'nullable',
+            'name_en' => 'required|max:255',
+            'name_ar' => 'required|max:255',
+            'is_active' => 'required',
         ];
     }
 }

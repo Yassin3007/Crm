@@ -60,12 +60,12 @@
                                             </div>
                                             <div class="col-md-3 col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="city_id">{{ __('dashboard.city.title') }}</label>
-                                                    <select class="form-control" id="city_id" name="city_id">
-                                                        <option value="">{{ __('dashboard.common.select') }} {{ __('dashboard.city.title') }}</option>
-                                                        @foreach($cities as $city)
-                                                            <option value="{{ $city->id }}" {{ request('city_id') == $city->id ? 'selected' : '' }}>
-                                                                {{ $city->name }}
+                                                    <label for="source_id">{{ __('dashboard.source.title') }}</label>
+                                                    <select class="form-control" id="source_id" name="source_id">
+                                                        <option value="">{{ __('dashboard.common.select') }} {{ __('dashboard.source.title') }}</option>
+                                                        @foreach($sources as $source)
+                                                            <option value="{{ $source->id }}" {{ request('source_id') == $source->id ? 'selected' : '' }}>
+                                                                {{ $source->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -269,7 +269,7 @@
                                             <th>{{ __("dashboard.lead.fields.email") }}</th>
                                             <th>{{ __("dashboard.lead.fields.national_id") }}</th>
                                             <th>{{ __("dashboard.branch.title") }}</th>
-                                            <th>{{ __("dashboard.city.title") }}</th>
+                                            <th>{{ __("dashboard.source.title") }}</th>
                                             <th>{{ __("dashboard.district.title") }}</th>
                                             <th>{{ __("dashboard.lead.fields.location_link") }}</th>
                                             <th>{{ __('dashboard.common.actions') }}</th>
@@ -285,7 +285,7 @@
                                                 <td>{{ $lead->email }}</td>
                                                 <td>{{ $lead->national_id }}</td>
                                                 <td>{{ $lead->branch->name ?? '-' }}</td>
-                                                <td>{{ $lead->city->name ?? '-' }}</td>
+                                                <td>{{ $lead->source->name ?? '-' }}</td>
                                                 <td>{{ $lead->district->name ?? '-' }}</td>
                                                 <td>
                                                     @if($lead->location_link)
@@ -300,14 +300,14 @@
                                                     @can('view_lead')
                                                         <a href="{{ route('leads.show', $lead->id) }}"
                                                            class="btn btn-info btn-sm">
-                                                            <i class="icon-eye6"></i> {{ __('dashboard.common.view') }}
+                                                            <i class="icon-eye6"></i>
                                                         </a>
                                                     @endcan
 
                                                     @can('edit_lead')
                                                         <a href="{{ route('leads.edit', $lead->id) }}"
                                                            class="btn btn-warning btn-sm">
-                                                            <i class="icon-pencil3"></i> {{ __('dashboard.common.edit') }}
+                                                            <i class="icon-pencil3"></i>
                                                         </a>
                                                     @endcan
 
@@ -318,7 +318,7 @@
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger btn-sm"
                                                                     onclick="return confirm('{{ __('dashboard.lead.delete_confirm') }}');">
-                                                                <i class="icon-trash4"></i> {{ __('dashboard.common.delete') }}
+                                                                <i class="icon-trash4"></i>
                                                             </button>
                                                         </form>
                                                     @endcan

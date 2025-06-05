@@ -12,6 +12,7 @@ use App\Models\City;
 use App\Models\District;
 use App\Models\LeadAction;
 use App\Models\LeadMedia;
+use App\Models\Source;
 use App\Services\LeadService;
 use App\Models\Lead;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class LeadController extends Controller
             'name' => $request->get('name'),
             'phone' => $request->get('phone'),
             'email' => $request->get('email'),
-            'city_id' => $request->get('city_id'),
+            'source_id' => $request->get('source_id'),
             'branch_id' => $request->get('branch_id'),
             'district_id' => $request->get('district_id'),
             'date_from' => $request->get('date_from'),
@@ -61,11 +62,11 @@ class LeadController extends Controller
         $leads = $this->leadService->getAllPaginated(15, ['city','branch','district'], $filters);
 
         // Get dropdown data for filters
-        $cities = \App\Models\City::get();
+        $sources  = \App\Models\Source::get();
         $branches = \App\Models\Branch::get();
         $districts = \App\Models\District::get();
 
-        return view('dashboard.leads.index', compact('leads', 'cities', 'branches', 'districts', 'filters'));
+        return view('dashboard.leads.index', compact('leads', 'sources', 'branches', 'districts', 'filters'));
     }
 
     /**
@@ -76,9 +77,9 @@ class LeadController extends Controller
     public function create(): View
     {
         $branches = Branch::query()->active()->get();
-        $cities = City::query()->active()->get();
+        $sources = Source::query()->active()->get();
         $districts = District::query()->active()->get();
-        return view('dashboard.leads.create',compact('branches','cities','districts'));
+        return view('dashboard.leads.create',compact('branches','sources','districts'));
     }
 
     /**
@@ -129,9 +130,9 @@ class LeadController extends Controller
     public function edit(Lead $lead): View
     {
         $branches = Branch::query()->active()->get();
-        $cities = City::query()->active()->get();
+        $sources = Source::query()->active()->get();
         $districts = District::query()->active()->get();
-        return view('dashboard.leads.edit', compact('lead','branches','cities','districts'));
+        return view('dashboard.leads.edit', compact('lead','branches','sources','districts'));
     }
 
     /**

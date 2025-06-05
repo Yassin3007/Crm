@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('national_id');
             $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('source_id')->constrained('sources');
             $table->foreignId('district_id')->constrained('districts')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('location_link');
             $table->timestamps();

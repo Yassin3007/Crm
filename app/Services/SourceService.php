@@ -2,88 +2,34 @@
 
 namespace App\Services;
 
-use App\Models\Lead;
+use App\Models\Source;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class LeadService
+class SourceService
 {
-    protected Lead $model;
+    protected Source $model;
 
-    public function __construct(Lead $model)
+    public function __construct(Source $model)
     {
         $this->model = $model;
     }
 
     /**
-     * Get all leads with pagination
+     * Get all sources with pagination
      *
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-//    public function getAllPaginated(int $perPage = 15 , $with = [],): LengthAwarePaginator
-//    {
-//        return $this->model->with($with)->where()->latest()->paginate($perPage);
-//    }
-    public function getAllPaginated($perPage = 15, $with = [], $filters = [])
+    public function getAllPaginated(int $perPage = 15 , $with = []): LengthAwarePaginator
     {
-        $query = $this->model->query();
-
-        // Apply eager loading
-        if (!empty($with)) {
-            $query->with($with);
-        }
-
-        // Apply filters
-        if (!empty($filters)) {
-
-            // Name filter
-            if (!empty($filters['name'])) {
-                $query->where('name', 'LIKE', '%' . $filters['name'] . '%');
-            }
-
-            // Phone filter
-            if (!empty($filters['phone'])) {
-                $query->where('phone', 'LIKE', '%' . $filters['phone'] . '%');
-            }
-
-            // Email filter
-            if (!empty($filters['email'])) {
-                $query->where('email', 'LIKE', '%' . $filters['email'] . '%');
-            }
-
-            // Source filter
-            if (!empty($filters['source_id'])) {
-                $query->where('source_id', $filters['source_id']);
-            }
-
-            // Branch filter
-            if (!empty($filters['branch_id'])) {
-                $query->where('branch_id', $filters['branch_id']);
-            }
-
-            // District filter
-            if (!empty($filters['district_id'])) {
-                $query->where('district_id', $filters['district_id']);
-            }
-
-            // Date range filter
-            if (!empty($filters['date_from'])) {
-                $query->whereDate('created_at', '>=', $filters['date_from']);
-            }
-
-            if (!empty($filters['date_to'])) {
-                $query->whereDate('created_at', '<=', $filters['date_to']);
-            }
-        }
-
-        return $query->orderBy('created_at', 'desc')->paginate($perPage);
+        return $this->model->with($with)->latest()->paginate($perPage);
     }
 
     /**
-     * Get all leads without pagination
+     * Get all sources without pagination
      *
      * @return Collection
      */
@@ -93,79 +39,79 @@ class LeadService
     }
 
     /**
-     * Find lead by ID
+     * Find source by ID
      *
      * @param int $id
-     * @return Lead|null
+     * @return Source|null
      */
-    public function findById(int $id): ?Lead
+    public function findById(int $id): ?Source
     {
         return $this->model->find($id);
     }
 
     /**
-     * Find lead by ID or fail
+     * Find source by ID or fail
      *
      * @param int $id
-     * @return Lead
+     * @return Source
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function findByIdOrFail(int $id): Lead
+    public function findByIdOrFail(int $id): Source
     {
         return $this->model->findOrFail($id);
     }
 
     /**
-     * Create a new lead
+     * Create a new source
      *
      * @param array $data
-     * @return Lead
+     * @return Source
      * @throws \Exception
      */
-    public function create(array $data): Lead
+    public function create(array $data): Source
     {
         try {
             DB::beginTransaction();
 
-            $lead = $this->model->create($data);
+            $source = $this->model->create($data);
 
             DB::commit();
 
-            Log::info('Lead created successfully', ['id' => $lead->id]);
+            Log::info('Source created successfully', ['id' => $source->id]);
 
-            return $lead;
+            return $source;
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error creating Lead', ['error' => $e->getMessage(), 'data' => $data]);
+            Log::error('Error creating Source', ['error' => $e->getMessage(), 'data' => $data]);
             throw $e;
         }
     }
 
     /**
-     * Update an existing lead
+     * Update an existing source
      *
-     * @param Lead $lead
+     * @param Source $source
      * @param array $data
-     * @return Lead
+     * @return Source
      * @throws \Exception
      */
-    public function update(Lead $lead, array $data): Lead
+    public function update(Source $source, array $data): Source
     {
         try {
             DB::beginTransaction();
 
-            $lead->update($data);
-            $lead->refresh();
+            $source->update($data);
+            $source->refresh();
 
             DB::commit();
 
-            Log::info('Lead updated successfully', ['id' => $lead->id]);
+            Log::info('Source updated successfully', ['id' => $source->id]);
 
-            return $lead;
+            return $source;
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error updating Lead', [
-                'id' => $lead->id,
+            Log::error('Error updating Source', [
+                'id' => $source->id,
                 'error' => $e->getMessage(),
                 'data' => $data
             ]);
@@ -174,28 +120,28 @@ class LeadService
     }
 
     /**
-     * Delete a lead
+     * Delete a source
      *
-     * @param Lead $lead
+     * @param Source $source
      * @return bool
      * @throws \Exception
      */
-    public function delete(Lead $lead): bool
+    public function delete(Source $source): bool
     {
         try {
             DB::beginTransaction();
 
-            $deleted = $lead->delete();
+            $deleted = $source->delete();
 
             DB::commit();
 
-            Log::info('Lead deleted successfully', ['id' => $lead->id]);
+            Log::info('Source deleted successfully', ['id' => $source->id]);
 
             return $deleted;
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error deleting Lead', [
-                'id' => $lead->id,
+            Log::error('Error deleting Source', [
+                'id' => $source->id,
                 'error' => $e->getMessage()
             ]);
             throw $e;
@@ -203,7 +149,7 @@ class LeadService
     }
 
     /**
-     * Search leads based on criteria
+     * Search sources based on criteria
      *
      * @param array $criteria
      * @return LengthAwarePaginator
@@ -242,7 +188,7 @@ class LeadService
     }
 
     /**
-     * Bulk delete leads
+     * Bulk delete sources
      *
      * @param array $ids
      * @return int
@@ -257,7 +203,7 @@ class LeadService
 
             DB::commit();
 
-            Log::info('Bulk delete leads completed', [
+            Log::info('Bulk delete sources completed', [
                 'ids' => $ids,
                 'deleted_count' => $deleted
             ]);
@@ -265,7 +211,7 @@ class LeadService
             return $deleted;
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error in bulk delete leads', [
+            Log::error('Error in bulk delete sources', [
                 'ids' => $ids,
                 'error' => $e->getMessage()
             ]);
@@ -274,7 +220,7 @@ class LeadService
     }
 
     /**
-     * Get leads by specific field
+     * Get sources by specific field
      *
      * @param string $field
      * @param mixed $value
@@ -286,7 +232,7 @@ class LeadService
     }
 
     /**
-     * Count total leads
+     * Count total sources
      *
      * @return int
      */
@@ -296,7 +242,7 @@ class LeadService
     }
 
     /**
-     * Check if lead exists
+     * Check if source exists
      *
      * @param int $id
      * @return bool
@@ -307,7 +253,7 @@ class LeadService
     }
 
     /**
-     * Get latest leads
+     * Get latest sources
      *
      * @param int $limit
      * @return Collection
@@ -318,34 +264,34 @@ class LeadService
     }
 
     /**
-     * Duplicate a lead
+     * Duplicate a source
      *
-     * @param Lead $lead
-     * @return Lead
+     * @param Source $source
+     * @return Source
      * @throws \Exception
      */
-    public function duplicate(Lead $lead): Lead
+    public function duplicate(Source $source): Source
     {
         try {
             DB::beginTransaction();
 
-            $data = $lead->toArray();
+            $data = $source->toArray();
             unset($data['id'], $data['created_at'], $data['updated_at']);
 
-            $newLead = $this->model->create($data);
+            $newSource = $this->model->create($data);
 
             DB::commit();
 
-            Log::info('Lead duplicated successfully', [
-                'original_id' => $lead->id,
-                'new_id' => $newLead->id
+            Log::info('Source duplicated successfully', [
+                'original_id' => $source->id,
+                'new_id' => $newSource->id
             ]);
 
-            return $newLead;
+            return $newSource;
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error duplicating Lead', [
-                'id' => $lead->id,
+            Log::error('Error duplicating Source', [
+                'id' => $source->id,
                 'error' => $e->getMessage()
             ]);
             throw $e;
