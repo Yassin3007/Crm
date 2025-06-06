@@ -182,7 +182,7 @@ class LeadController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'action_type' => 'required|in:first_meeting,field_visit,presentation_meeting,signing_contract',
+            'action_type' => 'required|in:first_meeting,field_visit,presentation_meeting,signing_contract,notes',
             'action_date' => 'required|date',
             'action_time' => 'required|date_format:H:i',
             'notes' => 'nullable|string|max:1000',

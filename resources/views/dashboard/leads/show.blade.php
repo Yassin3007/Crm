@@ -365,6 +365,8 @@
                                             value="presentation_meeting">{{__('dashboard.lead.presentation_meeting')}}</option>
                                         <option
                                             value="signing_contract">{{__('dashboard.lead.signing_contract')}}</option>
+                                        <option
+                                            value="notes">{{__('dashboard.lead.fields.notes')}}</option>
 
                                     </select>
                                 </div>

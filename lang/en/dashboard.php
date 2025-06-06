@@ -254,6 +254,7 @@ return [
                 'city_id' => 'City Id',
                 'district_id' => 'District Id',
                 'location_link' => 'Location Link',
+                'notes'         => 'Notes',
             ],
             'first_meeting' => 'First Meeting',
             'field_visit' => 'Field Visit',
