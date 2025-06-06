@@ -257,6 +257,7 @@ return [
             'district_id' => 'معرف الحي',
             'location_link' => 'رابط الموقع',
         ],
+        'notes'         => 'ملاحظات',
         'first_meeting' => 'الاجتماع الأول',
         'field_visit' => 'الزيارة الميدانية',
         'presentation_meeting' => 'اجتماع العرض التقديمي',
