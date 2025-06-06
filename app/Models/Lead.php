@@ -15,7 +15,7 @@ class Lead extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'phone', 'whatsapp_number', 'email', 'national_id', 'branch_id', 'source_id', 'district_id', 'location_link'];
+    protected $fillable = ['name', 'phone', 'whatsapp_number', 'email', 'national_id', 'branch_id', 'source_id', 'district_id', 'location_link','created_at'];
 
     /**
      * Get the table associated with the model.

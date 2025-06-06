@@ -33,6 +33,7 @@ class LeadRequest extends FormRequest
             'source_id' => 'nullable',
             'district_id' => 'nullable',
             'location_link' => 'nullable',
+            'created_at' => 'required'
         ];
     }
 }

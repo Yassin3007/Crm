@@ -79,7 +79,7 @@ class LeadService
             }
         }
 
-        return $query->orderBy('created_at', 'desc')->paginate($perPage);
+        return $query->orderBy('id', 'desc')->paginate($perPage);
     }
 
     /**
