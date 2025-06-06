@@ -584,7 +584,7 @@
                         <div class="top-performing">
                             <h4>Top Performing</h4>
 
-                            <h6>Top Cities by Leads</h6>
+                            <h6>Top Branches by Leads</h6>
                             @forelse($topStats['top_cities'] as $city)
                                 <div class="top-item">
                                     <span>{{ $city['name'] }}</span>

@@ -114,11 +114,11 @@
                                                 <span class="badge badge-info">{{ $lead->branch->name }}</span>
                                             </p>
                                         </div>
-                                        <div class="info-item mb-3">
-                                            <label class="font-weight-bold text-muted">{{ __("dashboard.city.title") }}
-                                                :</label>
-                                            <p class="mb-0">{{ $lead->city->name }}</p>
-                                        </div>
+{{--                                        <div class="info-item mb-3">--}}
+{{--                                            <label class="font-weight-bold text-muted">{{ __("dashboard.city.title") }}--}}
+{{--                                                :</label>--}}
+{{--                                            <p class="mb-0">{{ $lead->city->name }}</p>--}}
+{{--                                        </div>--}}
                                         <div class="info-item mb-3">
                                             <label
                                                 class="font-weight-bold text-muted">{{ __("dashboard.district.title") }}

@@ -239,9 +239,9 @@ class StatisticsController extends Controller
             ->get()
             ->groupBy('city_id')
             ->map(function ($leads, $cityId) {
-                $city = $leads->first()->city;
+                $branch = $leads->first()->branch;
                 return [
-                    'name' => $city->name, // This will use the getter for multilingual names
+                    'name' => $branch?->name, // This will use the getter for multilingual names
                     'leads_count' => $leads->count()
                 ];
             })
