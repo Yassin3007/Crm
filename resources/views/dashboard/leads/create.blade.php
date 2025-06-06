@@ -228,6 +228,21 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <label for="created_at">{{ __("dashboard.common.created_at") }}</label>
+                                                    <input type="date" id="created_at"
+                                                           class="form-control @error('created_at') is-invalid @enderror"
+                                                           name="created_at"
+                                                           value="{{ isset($lead) ? $lead->created_at->format('Y-m-d') : now()->format('Y-m-d') }}"
+                                                           placeholder="{{ __("dashboard.common.created_at") }}"
+                                                           data-toggle="tooltip" data-trigger="hover"
+                                                           data-placement="top"
+                                                           data-title="{{ __("dashboard.common.created_at") }}">
+                                                    @error('created_at')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
                                             </div>
 
                                             <div class="form-actions">
