@@ -15,7 +15,7 @@ class Lead extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'phone', 'whatsapp_number', 'email', 'national_id', 'branch_id', 'source_id', 'district_id', 'location_link','created_at'];
+    protected $fillable = ['name', 'phone', 'whatsapp_number', 'email', 'national_id', 'branch_id', 'source_id', 'district_id', 'location_link','created_at','category_id', 'type'];
 
     /**
      * Get the table associated with the model.
@@ -96,5 +96,10 @@ class Lead extends Model
     public function documents(): HasMany
     {
         return $this->hasMany(LeadMedia::class)->where('file_type', 'document');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

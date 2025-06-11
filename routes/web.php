@@ -412,3 +412,34 @@ Route::middleware(['auth'])->group(function() {
         ->name('sources.destroy')
         ->middleware('can:delete_source');
 });
+
+// Routes for Category
+Route::middleware(['auth'])->group(function() {
+    Route::get('categories', [CategoryController::class, 'index'])
+        ->name('categories.index')
+        ->middleware('can:view_category');
+
+    Route::get('categories/create', [CategoryController::class, 'create'])
+        ->name('categories.create')
+        ->middleware('can:create_category');
+
+    Route::post('categories', [CategoryController::class, 'store'])
+        ->name('categories.store')
+        ->middleware('can:create_category');
+
+    Route::get('categories/{category}', [CategoryController::class, 'show'])
+        ->name('categories.show')
+        ->middleware('can:view_category');
+
+    Route::get('categories/{category}/edit', [CategoryController::class, 'edit'])
+        ->name('categories.edit')
+        ->middleware('can:edit_category');
+
+    Route::put('categories/{category}', [CategoryController::class, 'update'])
+        ->name('categories.update')
+        ->middleware('can:edit_category');
+
+    Route::delete('categories/{category}', [CategoryController::class, 'destroy'])
+        ->name('categories.destroy')
+        ->middleware('can:delete_category');
+});

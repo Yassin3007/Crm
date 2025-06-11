@@ -264,12 +264,14 @@
                                         <tr>
                                             <th>{{ __('dashboard.common.number') }}</th>
                                             <th>{{ __("dashboard.lead.fields.name") }}</th>
+                                            <th>{{ __("dashboard.common.type") }}</th>
                                             <th>{{ __("dashboard.lead.fields.phone") }}</th>
                                             <th>{{ __("dashboard.lead.fields.whatsapp_number") }}</th>
                                             <th>{{ __("dashboard.lead.fields.email") }}</th>
                                             <th>{{ __("dashboard.lead.fields.national_id") }}</th>
                                             <th>{{ __("dashboard.branch.title") }}</th>
                                             <th>{{ __("dashboard.source.title") }}</th>
+                                            <th>{{ __("dashboard.category.title") }}</th>
                                             <th>{{ __("dashboard.district.title") }}</th>
                                             <th>{{ __("dashboard.lead.fields.location_link") }}</th>
                                             <th>{{ __('dashboard.common.actions') }}</th>
@@ -280,12 +282,14 @@
                                             <tr>
                                                 <th scope="row">{{ $loop->iteration + ($leads->currentPage() - 1) * $leads->perPage() }}</th>
                                                 <td>{{ $lead->name }}</td>
+                                                <td>{{ $lead->type?  __('dashboard.common.'. $lead->type) : '-' }}</td>
                                                 <td>{{ $lead->phone }}</td>
                                                 <td>{{ $lead->whatsapp_number }}</td>
                                                 <td>{{ $lead->email }}</td>
                                                 <td>{{ $lead->national_id }}</td>
                                                 <td>{{ $lead->branch->name ?? '-' }}</td>
                                                 <td>{{ $lead->source->name ?? '-' }}</td>
+                                                <td>{{ $lead->category->name ?? '-' }}</td>
                                                 <td>{{ $lead->district->name ?? '-' }}</td>
                                                 <td>
                                                     @if($lead->location_link)

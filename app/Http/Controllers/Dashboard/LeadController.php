@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LeadRequest;
 use App\Imports\LeadsImport;
 use App\Models\Branch;
+use App\Models\Category;
 use App\Models\City;
 use App\Models\District;
 use App\Models\LeadAction;
@@ -59,7 +60,7 @@ class LeadController extends Controller
             return !is_null($value) && $value !== '';
         });
 
-        $leads = $this->leadService->getAllPaginated(15, ['city','branch','district'], $filters);
+        $leads = $this->leadService->getAllPaginated(15, ['city','branch','district','category'], $filters);
 
         // Get dropdown data for filters
         $sources  = \App\Models\Source::get();
@@ -79,7 +80,8 @@ class LeadController extends Controller
         $branches = Branch::query()->active()->get();
         $sources = Source::query()->active()->get();
         $districts = District::query()->active()->get();
-        return view('dashboard.leads.create',compact('branches','sources','districts'));
+        $categories = Category::query()->active()->get();
+        return view('dashboard.leads.create',compact('branches','sources','districts','categories'));
     }
 
     /**
@@ -114,6 +116,7 @@ class LeadController extends Controller
             'branch',
             'city',
             'district',
+            'category' ,
             'actions' => function($query) {
                 $query->orderBy('created_at', 'desc');
             }
@@ -132,7 +135,9 @@ class LeadController extends Controller
         $branches = Branch::query()->active()->get();
         $sources = Source::query()->active()->get();
         $districts = District::query()->active()->get();
-        return view('dashboard.leads.edit', compact('lead','branches','sources','districts'));
+        $categories = Category::query()->active()->get();
+
+        return view('dashboard.leads.edit', compact('lead','branches','sources','districts','categories'));
     }
 
     /**

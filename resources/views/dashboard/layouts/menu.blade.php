@@ -50,3 +50,8 @@
 <li class=" nav-item"><a href="{{ route('sources.index') }}"><i class="icon-folder"></i><span data-i18n="nav.sources.main" class="menu-title">{{__('dashboard.source.title_plural')}}</span></a>
 </li>
 @endcan
+
+@can('view_category')
+<li class=" nav-item"><a href="{{ route('categories.index') }}"><i class="icon-list"></i><span data-i18n="nav.categories.main" class="menu-title">{{__('dashboard.category.title_plural')}}</span></a>
+</li>
+@endcan

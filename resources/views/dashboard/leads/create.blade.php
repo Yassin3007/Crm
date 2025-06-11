@@ -171,27 +171,7 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
-                                                <div class="form-group">
-                                                    <label
-                                                        for="source_id">{{ __("dashboard.source.title") }}</label>
-                                                    <select id="source_id" name="source_id"
-                                                            class="form-control @error('source_id') is-invalid @enderror"
-                                                            data-toggle="tooltip" data-trigger="hover"
-                                                            data-placement="top"
-                                                            data-title="{{ __("dashboard.source.title") }}">
-                                                        <option
-                                                            value="">{{ __("dashboard.common.select") }} {{ __("dashboard.source.title") }}</option>
-                                                        @foreach($sources as $source)
-                                                            <option
-                                                                value="{{ $source->id }}" {{ isset($lead) && $lead->source_id == $source->id ? 'selected' : '' }}>
-                                                                {{ $source->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('source_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
+
                                                 <div class="form-group">
                                                     <label
                                                         for="district_id">{{ __("dashboard.lead.fields.district_id") }}</label>
@@ -213,6 +193,75 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <label
+                                                        for="source_id">{{ __("dashboard.source.title") }}</label>
+                                                    <select id="source_id" name="source_id"
+                                                            class="form-control @error('source_id') is-invalid @enderror"
+                                                            data-toggle="tooltip" data-trigger="hover"
+                                                            data-placement="top"
+                                                            data-title="{{ __("dashboard.source.title") }}">
+                                                        <option
+                                                            value="">{{ __("dashboard.common.select") }} {{ __("dashboard.source.title") }}</option>
+                                                        @foreach($sources as $source)
+                                                            <option
+                                                                value="{{ $source->id }}" {{ isset($lead) && $lead->source_id == $source->id ? 'selected' : '' }}>
+                                                                {{ $source->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('source_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label
+                                                        for="source_id">{{ __("dashboard.category.title") }}</label>
+                                                    <select id="category_id" name="category_id"
+                                                            class="form-control @error('category_id') is-invalid @enderror"
+                                                            data-toggle="tooltip" data-trigger="hover"
+                                                            data-placement="top"
+                                                            data-title="{{ __("dashboard.category.title") }}">
+                                                        <option
+                                                            value="">{{ __("dashboard.common.select") }} {{ __("dashboard.category.title") }}</option>
+                                                        @foreach($categories as $category)
+                                                            <option
+                                                                value="{{ $category->id }}" {{ isset($lead) && $lead->category_id == $category->id ? 'selected' : '' }}>
+                                                                {{ $category->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('category_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label
+                                                        for="source_id">{{ __("dashboard.common.type") }}</label>
+                                                    <select id="type" name="type"
+                                                            class="form-control @error('type') is-invalid @enderror"
+                                                            data-toggle="tooltip" data-trigger="hover"
+                                                            data-placement="top"
+                                                            data-title="{{ __("dashboard.common.type") }}">
+                                                        <option
+                                                            value="">{{ __("dashboard.common.select") }} {{ __("dashboard.common.type") }}</option>
+                                                            <option
+                                                                value="individual" {{ isset($lead) && $lead->type == 'individual' ? 'selected' : '' }}>
+                                                                {{ __('dashboard.common.individual') }}
+                                                            </option>
+                                                        <option
+                                                            value="company" {{ isset($lead) && $lead->type == 'company' ? 'selected' : '' }}>
+                                                            {{ __('dashboard.common.company') }}
+                                                        </option>
+                                                    </select>
+                                                    @error('type')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+
                                                 <div class="form-group">
                                                     <label
                                                         for="location_link">{{ __("dashboard.lead.fields.location_link") }}</label>

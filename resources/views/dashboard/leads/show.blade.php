@@ -106,7 +106,7 @@
                                         <h5 class="text-primary mb-3 mt-1">
                                             <i class="icon-location-pin"></i> Location Information
                                         </h5>
-                                        <div class="info-item mb-3">
+                                        <div class="info-item mb-2">
                                             <label
                                                 class="font-weight-bold text-muted">{{ __("dashboard.branch.title") }}
                                                 :</label>
@@ -119,13 +119,13 @@
 {{--                                                :</label>--}}
 {{--                                            <p class="mb-0">{{ $lead->city->name }}</p>--}}
 {{--                                        </div>--}}
-                                        <div class="info-item mb-3">
+                                        <div class="info-item mb-2">
                                             <label
                                                 class="font-weight-bold text-muted">{{ __("dashboard.district.title") }}
                                                 :</label>
                                             <p class="mb-0">{{ $lead->district->name }}</p>
                                         </div>
-                                        <div class="info-item mb-3">
+                                        <div class="info-item mb-2">
                                             <label
                                                 class="font-weight-bold text-muted">{{ __("dashboard.lead.fields.location_link") }}
                                                 :</label>
@@ -135,6 +135,22 @@
                                                     <i class="icon-map"></i> View on Map
                                                 </a>
                                             </p>
+                                        </div>
+
+                                        <div class="info-item mb-2">
+                                            <label
+                                                class="font-weight-bold text-muted">{{ __("dashboard.category.title") }}
+                                                :</label>
+                                            <p class="mb-0">{{ $lead->category->name ?? '-' }}</p>
+
+                                        </div>
+
+                                        <div class="info-item mb-2">
+                                            <label
+                                                class="font-weight-bold text-muted">{{ __("dashboard.common.type") }}
+                                                :</label>
+                                            <p class="mb-0">{{ $lead->type ? __('dashboard.common.'.$lead->type) : '-' }}</p>
+
                                         </div>
 
                                         <!-- Timestamps -->

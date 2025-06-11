@@ -32,8 +32,10 @@ class LeadRequest extends FormRequest
             'branch_id' => 'nullable',
             'source_id' => 'nullable',
             'district_id' => 'nullable',
+            'category_id' => 'nullable|exists:categories,id',
             'location_link' => 'nullable',
-            'created_at' => 'required'
+            'created_at' => 'required',
+            'type' => 'nullable'
         ];
     }
 }
