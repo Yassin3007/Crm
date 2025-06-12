@@ -326,6 +326,14 @@
                                                             </button>
                                                         </form>
                                                     @endcan
+                                                        @if($lead->whatsapp_number)
+                                                            <a href="https://wa.me/{{ str_replace([' ', '+'], '', $lead->whatsapp_number) }}"
+                                                               target="_blank"
+                                                               class="btn btn-success btn-sm"
+                                                               title="Contact via WhatsApp">
+                                                                <i class="icon-whatsapp"></i>
+                                                            </a>
+                                                        @endif
                                                 </td>
                                             </tr>
                                         @empty
