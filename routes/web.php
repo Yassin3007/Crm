@@ -15,6 +15,7 @@ use App\Http\Controllers\Dashboard\DistrictController;
 use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\LeadController;
 use App\Http\Controllers\Dashboard\SourceController;
+use App\Http\Controllers\Dashboard\ProductController;
 
 
 
@@ -442,4 +443,35 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('categories/{category}', [CategoryController::class, 'destroy'])
         ->name('categories.destroy')
         ->middleware('can:delete_category');
+});
+
+// Routes for Product
+Route::middleware(['auth'])->group(function() {
+    Route::get('products', [ProductController::class, 'index'])
+        ->name('products.index')
+        ->middleware('can:view_product');
+
+    Route::get('products/create', [ProductController::class, 'create'])
+        ->name('products.create')
+        ->middleware('can:create_product');
+
+    Route::post('products', [ProductController::class, 'store'])
+        ->name('products.store')
+        ->middleware('can:create_product');
+
+    Route::get('products/{product}', [ProductController::class, 'show'])
+        ->name('products.show')
+        ->middleware('can:view_product');
+
+    Route::get('products/{product}/edit', [ProductController::class, 'edit'])
+        ->name('products.edit')
+        ->middleware('can:edit_product');
+
+    Route::put('products/{product}', [ProductController::class, 'update'])
+        ->name('products.update')
+        ->middleware('can:edit_product');
+
+    Route::delete('products/{product}', [ProductController::class, 'destroy'])
+        ->name('products.destroy')
+        ->middleware('can:delete_product');
 });
