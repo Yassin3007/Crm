@@ -56,6 +56,6 @@
 </li>
 @endcan
 @can('view_product')
-<li class=" nav-item"><a href="{{ route('products.index') }}"><i class="icon-list"></i><span data-i18n="nav.products.main" class="menu-title">{{__('dashboard.product.title_plural')}}</span></a>
+<li class=" nav-item"><a href="{{ route('products.index') }}"><i class="icon-product-hunt"></i><span data-i18n="nav.products.main" class="menu-title">{{__('dashboard.product.title_plural')}}</span></a>
 </li>
 @endcan
